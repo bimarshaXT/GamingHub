@@ -1,0 +1,143 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  background-color: #0c0c0c; /* black background like your product page */
+  color: #ffffff;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #0c0c0c; /* black */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5), 0 0 5px rgba(255, 181, 0, 0.1);
+  border-bottom: 1px solid #333333;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.logo img {
+  height: 60px;
+}
+
+.main-nav {
+  display: flex;
+  list-style: none;
+  align-items: center;
+}
+
+.main-nav li {
+  margin-left: 2rem;
+  position: relative;
+}
+
+.main-nav a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 14px;
+}
+
+.main-nav a:hover {
+  color: #ffb500; /* corsair yellow */
+}
+
+.profile-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.icon-img {
+  width: 24px;
+  height: 24px;
+  display: block;
+  filter: invert(1);
+}
+
+.profile-icon {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #333333; /* dark gray background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid #444444;
+  transition: border-color 0.3s ease;
+}
+
+.profile-icon:hover {
+  border-color: #ffb500;
+  box-shadow: 0 0 8px rgba(255, 181, 0, 0.3);
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #1a1a1a; /* dark gray dropdown */
+  min-width: 180px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7), 0 0 10px rgba(255, 181, 0, 0.1);
+  z-index: 1;
+  border-radius: 4px;
+  border: 1px solid #333333;
+  overflow: hidden;
+}
+
+.dropdown-content a {
+  color: #ffffff;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 14px;
+}
+
+.dropdown-content a:hover {
+  background-color: #333333;
+  color: #ffb500;
+}
+
+.profile-container:hover .dropdown-content {
+  display: block;
+}
+
+.icon-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon-container .icon-img {
+  transition: filter 0.3s ease;
+}
+
+.site-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 28px; /* Increased size */
+  font-weight: 600;
+  color: #ffb500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none; /* Removes underline */
+}

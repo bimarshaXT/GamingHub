@@ -1,0 +1,147 @@
+@charset "UTF-8";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #0D1117;
+  background-image: url('../resources/images/background4.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #E6E6E6;
+  line-height: 1.6;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(13, 17, 23, 0.7);
+  z-index: -1;
+}
+
+/* Center wrapper for just the login content */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+  padding: 40px 20px;
+}
+
+/* Actual login box */
+.login-box {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  background-color: rgba(22, 27, 34, 0.9);
+  border: 1px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(138, 43, 226, 0.2);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #8A2BE2;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.row {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.col {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #AAAAAA;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: #1E2329;
+  border: 1px solid #333;
+  border-radius: 4px;
+  color: #FFFFFF;
+  font-size: 16px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #8A2BE2;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 20px;
+  background-color: #8A2BE2;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #7B24DE;
+}
+
+.secondary-button {
+  background-color: transparent;
+  border: 1px solid #8A2BE2;
+  color: #8A2BE2;
+}
+
+.secondary-button:hover {
+  background-color: rgba(138, 43, 226, 0.1);
+}
+
+a {
+  display: block;
+  margin-top: 20px;
+  color: #AAAAAA;
+  text-decoration: none;
+  font-size: 14px;
+  text-align: center;
+}
+
+a:hover {
+  color: #8A2BE2;
+}
+
+.error-message {
+  color: #FF3860;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
+}
+
+.success-message {
+  color: #8A2BE2;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
+}
