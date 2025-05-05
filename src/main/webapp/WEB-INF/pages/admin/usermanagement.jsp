@@ -1,71 +1,76 @@
+<%@ page import="java.util.*, com.GamingHub.model.CustomerModel" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%
+    List<CustomerModel> customers = (List<CustomerModel>) request.getAttribute("customers");
+    String contextPath = request.getContextPath();
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>User Management</title>
-	<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/usermanagement.css?v=1.2.2" />
+    <meta charset="UTF-8">
+    <title>User Management</title>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/usermanagement.css?v=1.2.4" />
+    <style>
+        table img {
+            width: 50px;
+            height: auto;
+            border-radius: 50%;
+        }
+    </style>
 </head>
 
 <body>
-  <div class="dashboard">
-    <div class="sidebar">
-      <div class="logo">Admin Panel</div>
-      <ul class="menu">
-        <li><a href="${pageContext.request.contextPath}/pages/admin/dashboard.jsp" class="active">Dashboard</a></li>
-        <li><a href="${pageContext.request.contextPath}/pages/admin/usermanagement.jsp">Users</a></li>
-        <li><a href="${pageContext.request.contextPath}/pages/admin/productmanagement.jsp">Products</a></li>
-        <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
-      </ul>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="logo">Admin Panel</div>
+            <ul class="menu">
+                <li><a href="${pageContext.request.contextPath}/dashboard">Dashboard</a></li>
+                <li><a href="${pageContext.request.contextPath}/usermanagement" class="active">Users</a></li>
+                <li><a href="${pageContext.request.contextPath}/productmanagement">Products</a></li>
+                <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
+            </ul>
+        </div>
+
+        <h1>User Management</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Full Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>DOB</th>
+                    <th>Gender</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    if (customers != null && !customers.isEmpty()) {
+                        for (CustomerModel customer : customers) {
+                %>
+                    <tr>
+                        <td><img src="<%= contextPath + "/resources/customer/" + customer.getImageURL() %>" alt="User Image" /></td>
+                        <td><%= customer.getFirst_name() + " " + customer.getLast_name() %></td>
+                        <td><%= customer.getUsername() %></td>
+                        <td><%= customer.getEmail() %></td>
+                        <td><%= customer.getDob() %></td>
+                        <td><%= customer.getGender() %></td>
+                        <td><%= customer.getNumber() %></td>
+                    </tr>
+                <%
+                        }
+                    } else {
+                %>
+                    <tr><td colspan="7">No users found</td></tr>
+                <%
+                    }
+                %>
+            </tbody>
+        </table>
     </div>
-    <h1>Product Management</h1>
-    
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Product Name</th>
-                <th>Category</th>
-                <th>Price</th>
-                <th>Stock</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>P001</td>
-                <td>Laptop Dell XPS 13</td>
-                <td>Electronics</td>
-                <td>$1299.99</td>
-                <td>15</td>
-            </tr>
-            <tr>
-                <td>P002</td>
-                <td>Wireless Headphones</td>
-                <td>Electronics</td>
-                <td>$199.99</td>
-                <td>42</td>
-            </tr>
-            <tr>
-                <td>P003</td>
-                <td>Office Chair</td>
-                <td>Furniture</td>
-                <td>$249.99</td>
-                <td>8</td>
-            </tr>
-            <tr>
-                <td>P004</td>
-                <td>Cotton T-Shirt</td>
-                <td>Clothing</td>
-                <td>$24.99</td>
-                <td>120</td>
-            </tr>
-            <tr>
-                <td>P005</td>
-                <td>Design Patterns Book</td>
-                <td>Books</td>
-                <td>$39.99</td>
-                <td>27</td>
-            </tr>
-        </tbody>
-    </table>
 </body>
 </html>

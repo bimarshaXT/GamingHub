@@ -1,4 +1,3 @@
-// ProductsService.java
 package com.GamingHub.service;
 
 import com.GamingHub.config.DbConfig;
@@ -9,7 +8,8 @@ import java.sql.*;
 import java.util.*;
 
 public class ProductService {
-    public List<ProductModel> getLimitedProducts() {
+    // Get all products (without any limit or category filtering)
+    public List<ProductModel> getAllProducts() {
         List<ProductModel> products = new ArrayList<>();
         String query = "SELECT * FROM product ORDER BY category_id";
 
@@ -24,9 +24,10 @@ public class ProductService {
             e.printStackTrace();
         }
 
-        return filterTwoPerCategory(products);
+        return products; // Return all products
     }
 
+    // Get products by a specific category
     public List<ProductModel> getProductsByCategory(int categoryId) {
         List<ProductModel> products = new ArrayList<>();
         String query = "SELECT * FROM product WHERE category_id = ?";
@@ -47,6 +48,7 @@ public class ProductService {
         return products;
     }
 
+    // Get all categories
     public List<CategoryModel> getAllCategories() {
         List<CategoryModel> categories = new ArrayList<>();
         String query = "SELECT * FROM category";
@@ -70,6 +72,7 @@ public class ProductService {
         return categories;
     }
 
+    // Map a ResultSet to a ProductModel object
     private ProductModel mapProduct(ResultSet rs) throws SQLException {
         int categoryId = rs.getInt("category_id");
         CategoryModel category = new CategoryModel(categoryId, null, null);
@@ -85,22 +88,5 @@ public class ProductService {
                 rs.getString("image_url"),
                 category
         );
-    }
-
-    private List<ProductModel> filterTwoPerCategory(List<ProductModel> products) {
-        Map<Integer, List<ProductModel>> categoryMap = new LinkedHashMap<>();
-        for (ProductModel p : products) {
-            int categoryId = p.getCategory().getCategory_id();
-            categoryMap.putIfAbsent(categoryId, new ArrayList<>());
-            if (categoryMap.get(categoryId).size() < 2) {
-                categoryMap.get(categoryId).add(p);
-            }
-        }
-
-        List<ProductModel> filtered = new ArrayList<>();
-        for (List<ProductModel> list : categoryMap.values()) {
-            filtered.addAll(list);
-        }
-        return filtered;
     }
 }

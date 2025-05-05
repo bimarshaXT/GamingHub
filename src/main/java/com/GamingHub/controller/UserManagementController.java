@@ -1,21 +1,30 @@
 package com.GamingHub.controller;
 
-import java.io.IOException;
+import com.GamingHub.model.CustomerModel;
+import com.GamingHub.service.UserManagementService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
+import java.io.IOException;
+import java.util.List;
 
-@WebServlet(asyncSupported = true, urlPatterns = {"/usermanagement"})
+@WebServlet("/usermanagement")
 public class UserManagementController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+
+    private UserManagementService userService;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-
-        req.getRequestDispatcher("/WEB-INF/pages/admin/usermanagement.jsp").forward(req, resp);
+    public void init() {
+        userService = new UserManagementService();
     }
 
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        List<CustomerModel> customers = userService.getAllCustomers();
+        request.setAttribute("customers", customers);
+        request.getRequestDispatcher("/WEB-INF/pages/admin/usermanagement.jsp").forward(request, response);
+    }
 }

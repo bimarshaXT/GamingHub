@@ -11,10 +11,12 @@
     <div class="sidebar">
       <div class="logo">Admin Panel</div>
       <ul class="menu">
-        <li><a href="#" class="active">Dashboard</a></li>
-        <li><a href="#">Users</a></li>
-        <li><a href="#">Products</a></li>
-        <li><a href="#">Logout</a></li>
+        <ul class="menu">
+        <li><a href="${pageContext.request.contextPath}/dashboard" class="active">Dashboard</a></li>
+        <li><a href="${pageContext.request.contextPath}/usermanagement">Users</a></li>
+        <li><a href="${pageContext.request.contextPath}/productmanagement">Products</a></li>
+        <li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
+      </ul>
       </ul>
     </div>
     

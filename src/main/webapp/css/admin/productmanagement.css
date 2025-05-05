@@ -1,4 +1,6 @@
-/* Admin User Management CSS - Clean and Simple */
+@charset "UTF-8";
+
+/* Admin Product Management CSS - Clean and Simple */
 
 /* Reset and Base Styles */
 * {
@@ -76,7 +78,7 @@ h1 {
     grid-column: 2;
 }
 
-/* Table Styles */
+/* Table Styles - Product focused */
 table {
     width: calc(100% - 60px);
     margin: 0 30px 30px;
@@ -84,6 +86,7 @@ table {
     background-color: #1a1a1a;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     grid-column: 2;
+    table-layout: auto;
 }
 
 table th {
@@ -94,12 +97,42 @@ table th {
     font-weight: 500;
     letter-spacing: 0.5px;
     border-bottom: 2px solid #333333;
+    font-size: 14px;
 }
 
 table td {
     padding: 12px 15px;
     border-bottom: 1px solid #333333;
     color: #ffffff;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+/* Column-specific styling */
+table td:first-child {
+    font-weight: 500;
+    color: #999999;
+}
+
+table td:nth-child(3) {
+    font-weight: 500; /* Product name */
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+table td:nth-child(6) {
+    color: #cccccc; /* Price */
+}
+
+table td:nth-child(7) {
+    color: #ffb500; /* Discount */
+    font-weight: 500;
+}
+
+table td:nth-child(8) {
+    text-align: center; /* Stock */
 }
 
 table tbody tr:hover {
@@ -107,11 +140,11 @@ table tbody tr:hover {
 }
 
 table img {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     object-fit: cover;
-    border-radius: 50%;
-    border: 2px solid #333333;
+    border-radius: 8px;
+    border: 1px solid #333333;
 }
 
 /* Empty state */
@@ -123,6 +156,14 @@ tbody tr td[colspan] {
 }
 
 /* Responsive Design */
+@media (max-width: 1200px) {
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
 @media (max-width: 992px) {
     .dashboard {
         grid-template-columns: 1fr;
@@ -144,12 +185,13 @@ tbody tr td[colspan] {
 }
 
 @media (max-width: 768px) {
-    table {
-        display: block;
-        overflow-x: auto;
+    table th, table td {
+        padding: 10px 12px;
+        font-size: 13px;
     }
     
-    table th, table td {
-        white-space: nowrap;
+    table img {
+        width: 50px;
+        height: 50px;
     }
 }

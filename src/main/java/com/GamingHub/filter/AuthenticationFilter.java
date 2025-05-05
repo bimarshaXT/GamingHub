@@ -26,6 +26,8 @@ public class AuthenticationFilter implements Filter {
 	private static final String PORTFOLIO = "/portfolio";
 	private static final String CONTACTUS = "/contactus";
 	private static final String PRODUCT = "/product";
+	private static final String USERMANAGEMENT = "/usermanagement";
+	private static final String PRODUCTMANAGEMENT = "/productmanagement";
 	
 	
 	@Override
@@ -54,7 +56,7 @@ public class AuthenticationFilter implements Filter {
         // Admin access to /dashboard only if logged in
         
            if (loggedIn && "admin".equals(role)) {
-        	  if (path.startsWith(DASHBOARD)) {
+        	  if (path.startsWith(DASHBOARD) || path.startsWith(USERMANAGEMENT) || path.startsWith(PRODUCTMANAGEMENT)) {
                 chain.doFilter(request, response);
             } else {
                 res.sendRedirect(req.getContextPath() + LOGIN);
