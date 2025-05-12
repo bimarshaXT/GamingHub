@@ -5,9 +5,7 @@ import com.GamingHub.service.ProductManagementService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,19 +13,27 @@ import java.util.List;
 @WebServlet(asyncSupported = true, urlPatterns = {"/productmanagement"})
 public class ProductManagementController extends HttpServlet {
 
-    private ProductManagementService ProductManagementService;
+    private ProductManagementService productManagementService;
 
     @Override
     public void init() throws ServletException {
         super.init();
-        ProductManagementService = new ProductManagementService();
+        productManagementService = new ProductManagementService();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<ProductModel> products = ProductManagementService.getAllProducts();
+        String searchTerm = request.getParameter("searchTerm");
+        List<ProductModel> products;
+
+        if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+            products = productManagementService.searchProducts(searchTerm.trim());
+        } else {
+            products = productManagementService.getAllProducts();
+        }
+
         request.setAttribute("products", products);
         request.getRequestDispatcher("/WEB-INF/pages/admin/productmanagement.jsp").forward(request, response);
     }

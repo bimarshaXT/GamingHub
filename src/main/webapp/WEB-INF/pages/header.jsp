@@ -23,7 +23,7 @@
         <li><a href="${pageContext.request.contextPath}/Home" class="home-button">Home</a></li>
         <li><a href="${pageContext.request.contextPath}/product" class="product-button">Products</a></li>
         <li>
-          <a href="#" class="icon-container">
+          <a href="${pageContext.request.contextPath}/order" class="icon-container">
             <!-- Placeholder for wishlist icon image -->
            <i class="fas fa-heart wishlist-icon" style="font-size: 20px; color: #ff4d4d;"></i>
           </a>

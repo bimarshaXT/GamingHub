@@ -31,12 +31,21 @@ body {
     background: linear-gradient(to right, transparent, #ffb500, transparent);
 }
 
-/* Category filter */
+/* Category filter and search */
 form {
     margin-bottom: 30px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
     gap: 15px;
+    position: relative;
+}
+
+.search-container {
+    display: flex;
+    gap: 5px;
+    margin-left: auto; /* Push to the right */
 }
 
 label {
@@ -51,23 +60,84 @@ select {
     padding: 8px 12px;
     background-color: #333333;
     color: #ffffff;
-    border: 1px solid #999999;
+    border: 1px solid #444444;
     border-radius: 3px;
     cursor: pointer;
     font-family: inherit;
     font-size: 14px;
     outline: none;
-    transition: all 0.3s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    min-width: 180px;
 }
 
 select:hover, select:focus {
     border-color: #ffb500;
-    box-shadow: 0 0 8px rgba(255, 181, 0, 0.15);
+    box-shadow: 0 0 8px rgba(255, 181, 0, 0.3);
 }
 
 select option {
     background-color: #333333;
     color: #ffffff;
+}
+
+/* Enhanced Search styling */
+input[type="text"] {
+    padding: 10px 15px;
+    background-color: #222222;
+    color: #ffffff;
+    border: 1px solid #444444;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    width: 200px; /* Fixed width instead of flex-grow */
+    transition: all 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+input[type="text"]:hover {
+    border-color: #555555;
+}
+
+input[type="text"]:focus {
+    border-color: #ffb500;
+    box-shadow: 0 0 10px rgba(255, 181, 0, 0.25), inset 0 1px 3px rgba(0, 0, 0, 0.3);
+    background-color: #2a2a2a;
+}
+
+input[type="text"]::placeholder {
+    color: #999999;
+    opacity: 0.8;
+}
+
+button[type="submit"] {
+    padding: 10px 18px;
+    background: linear-gradient(to bottom, #444444, #333333);
+    color: #ffffff;
+    border: 1px solid #444444;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(to bottom, #ffb500, #e6a400);
+    border-color: #ffb500;
+    color: #0c0c0c;
+}
+
+button[type="submit"]:active {
+    transform: translateY(1px);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Products grid */
@@ -197,10 +267,6 @@ select option {
     transform: translateY(2px);
 }
 
-.view-product-btn:active {
-    transform: translateY(2px);
-}
-
 /* Responsive styles */
 @media (max-width: 768px) {
     .container {
@@ -218,8 +284,13 @@ select option {
         align-items: flex-start;
         gap: 10px;
     }
+    
+    .search-container {
+        margin-left: 0;
+        width: 100%;
+    }
 
-    select {
+    select, input[type="text"], button[type="submit"] {
         width: 100%;
     }
 }

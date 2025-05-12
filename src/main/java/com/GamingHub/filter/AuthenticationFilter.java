@@ -28,7 +28,13 @@ public class AuthenticationFilter implements Filter {
 	private static final String PRODUCT = "/product";
 	private static final String USERMANAGEMENT = "/usermanagement";
 	private static final String PRODUCTMANAGEMENT = "/productmanagement";
-	
+	private static final String ORDERMANAGEMENT = "/ordermanagement";
+	private static final String ADDCUSTOMER = "/addcustomer";
+	private static final String DELETECUSTOMER = "/deletecustomer";
+	private static final String ADDPRODUCT = "/addproduct";
+	private static final String UPDATEPRODUCT = "/updateproduct";
+	private static final String VIEWPRODUCT = "/product/details";
+	private static final String ORDER = "/order";
 	
 	@Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -56,7 +62,8 @@ public class AuthenticationFilter implements Filter {
         // Admin access to /dashboard only if logged in
         
            if (loggedIn && "admin".equals(role)) {
-        	  if (path.startsWith(DASHBOARD) || path.startsWith(USERMANAGEMENT) || path.startsWith(PRODUCTMANAGEMENT)) {
+        	  if (path.startsWith(DASHBOARD) || path.startsWith(USERMANAGEMENT) || path.startsWith(PRODUCTMANAGEMENT) || path.startsWith(ORDERMANAGEMENT) || path.startsWith(ADDCUSTOMER)
+        			  || path.startsWith(DELETECUSTOMER) || path.startsWith(ADDPRODUCT) || path.startsWith(UPDATEPRODUCT)) {
                 chain.doFilter(request, response);
             } else {
                 res.sendRedirect(req.getContextPath() + LOGIN);
@@ -66,7 +73,8 @@ public class AuthenticationFilter implements Filter {
 
         // Customer access to /home only if logged in
            if (loggedIn && "customer".equals(role)) {
-              if (path.startsWith(HOME) || path.startsWith(PRODUCT) || path.startsWith(PORTFOLIO) || path.startsWith(ABOUTUS)|| path.startsWith(CONTACTUS)) {
+              if (path.startsWith(HOME) || path.startsWith(PRODUCT) || path.startsWith(PORTFOLIO) || path.startsWith(ABOUTUS)|| path.startsWith(CONTACTUS) 
+            		  || path.startsWith(VIEWPRODUCT) || path.startsWith(ORDER)) {
                 chain.doFilter(request, response);
             } else {
                 res.sendRedirect(req.getContextPath() + LOGIN);

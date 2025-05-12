@@ -27,6 +27,33 @@ public class ProductService {
         return products; // Return all products
     }
 
+    public List<ProductModel> searchProducts(String keyword) {
+        List<ProductModel> products = new ArrayList<>();
+        String query = """
+            SELECT p.* FROM product p
+            JOIN category c ON p.category_id = c.category_id
+            WHERE LOWER(p.product_name) LIKE ? OR LOWER(p.brand) LIKE ? OR LOWER(c.category_name) LIKE ?
+        """;
+
+        try (Connection con = DbConfig.getDbConnection();
+             PreparedStatement pst = con.prepareStatement(query)) {
+
+            String searchTerm = "%" + keyword.toLowerCase() + "%";
+            pst.setString(1, searchTerm);
+            pst.setString(2, searchTerm);
+            pst.setString(3, searchTerm);
+
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                products.add(mapProduct(rs));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+  
+        return products;
+    }
+    
     // Get products by a specific category
     public List<ProductModel> getProductsByCategory(int categoryId) {
         List<ProductModel> products = new ArrayList<>();

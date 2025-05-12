@@ -1,0 +1,320 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+/* Dashboard Layout */
+.dashboard {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    background-color: #0c0c0c;
+    border-right: 1px solid #444444;
+    padding: 20px 0;
+    position: fixed;
+    height: 100%;
+    width: 250px;
+    z-index: 10;
+}
+
+.logo {
+    color: #ffb500;
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    padding: 20px 15px;
+    border-bottom: 1px solid #333333;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.menu {
+    list-style: none;
+}
+
+.menu li {
+    margin: 5px 0;
+}
+
+.menu a {
+    display: block;
+    padding: 12px 20px;
+    color: #cccccc;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.menu a:hover, .menu a.active {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+.menu a.active {
+    border-left: 4px solid #ffb500;
+}
+
+/* Main Content Area */
+h1 {
+    color: #ffffff;
+    margin: 0;
+    font-size: 24px;
+    flex: 1;
+}
+
+/* Sticky Header Styles */
+.sticky-header {
+    background-color: #0c0c0c;
+    padding: 15px 30px;
+    grid-column: 2;
+    position: fixed;
+    top: 0;
+    left: 250px; /* Match the sidebar width */
+    right: 0;
+    z-index: 9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid #333333;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Order Action Buttons */
+.sticky-header form {
+    margin-right: 10px;
+    margin-top: 15px;
+}
+
+.sticky-header button {
+    padding: 10px 16px;
+    background-color: #ffb500;
+    color: #0c0c0c;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.sticky-header button:hover {
+    background-color: #ffc233;
+}
+
+.sticky-header button:active {
+    transform: scale(0.98);
+}
+
+#dispatchButton {
+    background-color: #1e90ff;
+    color: #ffffff;
+}
+
+#dispatchButton:hover {
+    background-color: #40a0ff;
+}
+
+#cancelButton {
+    background-color: #ff3333;
+    color: #ffffff;
+}
+
+#cancelButton:hover {
+    background-color: #ff5555;
+}
+
+.disabled {
+    background-color: #444444 !important;
+    color: #888888 !important;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Table Styles */
+table {
+    width: calc(100% - 60px);
+    margin: 120px 30px 30px; /* Increased top margin to account for sticky header */
+    border-collapse: collapse;
+    background-color: #1a1a1a;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    grid-column: 2;
+}
+
+table th {
+    background-color: #0c0c0c;
+    color: #ffb500;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #333333;
+    position: sticky;
+    top: 80px; /* Position below sticky header */
+}
+
+table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #333333;
+    color: #ffffff;
+}
+
+table tbody tr:hover {
+    background-color: #222222;
+}
+
+table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+table img {
+    width: 60px;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Radio Button Styling */
+table input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #444444;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    position: relative;
+    vertical-align: middle;
+}
+
+table input[type="radio"]:checked {
+    border-color: #ffb500;
+}
+
+table input[type="radio"]:checked::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ffb500;
+}
+
+table input[type="radio"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 181, 0, 0.3);
+}
+
+/* Order Status Styling */
+td:nth-last-child(1) {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.5px;
+    padding: 12px 15px;
+}
+
+/* Status Colors */
+td:nth-last-child(1):contains("Processing") {
+    color: #1e90ff;
+}
+
+td:nth-last-child(1):contains("Shipped") {
+    color: #2ecc71;
+}
+
+td:nth-last-child(1):contains("Delivered") {
+    color: #2ecc71;
+}
+
+td:nth-last-child(1):contains("Cancelled") {
+    color: #ff3333;
+}
+
+/* Since :contains isn't widely supported, use JavaScript to add classes */
+/* Adding these classes for the JavaScript to use */
+.status-processing {
+    color: #1e90ff !important;
+}
+
+.status-shipped, .status-delivered {
+    color: #2ecc71 !important;
+}
+
+.status-cancelled {
+    color: #ff3333 !important;
+}
+
+/* Empty state */
+tbody tr td[colspan] {
+    text-align: center;
+    padding: 20px;
+    font-style: italic;
+    color: #999999;
+}
+
+/* Price Styling */
+td:nth-last-child(2) {
+    font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    table {
+        grid-column: 1;
+        margin-left: 15px;
+        margin-right: 15px;
+        width: calc(100% - 30px);
+    }
+    
+    .sticky-header {
+        left: 0;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    table th, table td {
+        white-space: nowrap;
+    }
+    
+    .sticky-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .sticky-header form {
+        margin-right: 0;
+    }
+    
+    table {
+        margin-top: 180px; /* Increased top margin for mobile */
+    }
+}

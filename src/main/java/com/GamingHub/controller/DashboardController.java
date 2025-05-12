@@ -1,34 +1,35 @@
 package com.GamingHub.controller;
 
-import jakarta.servlet.ServletException;
+import com.GamingHub.dao.DashboardDAO;
+import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
+import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.*;
 
-/**
- * Controller to handle admin dashboard access
- */
-@WebServlet(asyncSupported = true, urlPatterns = {"/dashboard"})
+
+@WebServlet(asyncSupported = true, urlPatterns = { "/dashboard" })
 public class DashboardController extends HttpServlet {
-
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            DashboardDAO dao = new DashboardDAO();
 
-        // ✅ Check for login and admin role
-        String username = (String) request.getSession().getAttribute("username");
-        String role = (String) request.getSession().getAttribute("role");
+            req.setAttribute("userCount", dao.getUserCount());
+            req.setAttribute("productCount", dao.getProductCount());
+            req.setAttribute("processingCount", dao.getOrderCountByStatus("processing"));
+            req.setAttribute("shippedCount", dao.getOrderCountByStatus("shipped"));
+            req.setAttribute("cancelledCount", dao.getOrderCountByStatus("cancelled"));
+            req.setAttribute("totalRevenue", dao.getTotalRevenue());
+            req.setAttribute("categorySales", dao.getCategorySalesData());
+            req.setAttribute("dailySales", dao.getDailySalesData());
+            req.setAttribute("avgPricePerCategory", dao.getCategoryAveragePrices());
 
-        if (username == null || role == null || !"admin".equals(role)) {
-            // ❌ Not logged in or not an admin — redirect to login
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
+            req.getRequestDispatcher("/WEB-INF/pages/admin/dashboard.jsp").forward(req, resp);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            resp.sendError(500, "Dashboard error: " + e.getMessage());
         }
-
-        // ✅ Admin verified, forward to dashboard view
-        request.getRequestDispatcher("/WEB-INF/pages/admin/dashboard.jsp").forward(request, response);
     }
 }

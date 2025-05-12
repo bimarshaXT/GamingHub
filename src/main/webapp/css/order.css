@@ -1,0 +1,230 @@
+@charset "UTF-8";
+
+/* Orders Page CSS - Corsair Style Theme */
+
+body {
+    font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    background-color: #0c0c0c;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container styling */
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #1a1a1a;
+    border: 1px solid #333333;
+    box-shadow: 0 0 20px rgba(255, 181, 0, 0.15),
+                0 0 40px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    position: relative;
+}
+
+.container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #ffb500, transparent);
+}
+
+/* Orders Page Header */
+.orders-header {
+    position: relative;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #333;
+}
+
+.orders-header h2 {
+    font-size: 28px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #ffb500;
+    text-shadow: 0 0 10px rgba(255, 181, 0, 0.2);
+    margin: 0 0 10px 0;
+}
+
+.orders-header p {
+    color: #999;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Table styling */
+.orders-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 20px 0;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.orders-table thead th {
+    background-color: #222;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #ffb500;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #444;
+    position: relative;
+}
+
+.orders-table tbody td {
+    padding: 15px;
+    border-bottom: 1px solid #333;
+    color: #e0e0e0;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.orders-table tbody tr {
+    background-color: #1d1d1d;
+    transition: background-color 0.2s ease;
+}
+
+.orders-table tbody tr:hover {
+    background-color: #252525;
+}
+
+.orders-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Order status styling */
+.status {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 30px;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.status-processing {
+    background-color: rgba(25, 118, 210, 0.2);
+    color: #42a5f5;
+    border: 1px solid #1976d2;
+}
+
+.status-completed {
+    background-color: rgba(46, 125, 50, 0.2);
+    color: #66bb6a;
+    border: 1px solid #2e7d32;
+}
+
+.status-cancelled {
+    background-color: rgba(211, 47, 47, 0.2);
+    color: #ef5350;
+    border: 1px solid #d32f2f;
+}
+
+.status-shipped {
+    background-color: rgba(245, 124, 0, 0.2);
+    color: #ffa726;
+    border: 1px solid #f57c00;
+}
+
+.status-pending {
+    background-color: rgba(156, 39, 176, 0.2);
+    color: #ba68c8;
+    border: 1px solid #9c27b0;
+}
+
+/* Order ID column */
+.order-id {
+    font-family: monospace;
+    font-weight: 700;
+    font-size: 13px;
+    color: #ffb500;
+}
+
+/* Product name styling */
+.product-name {
+    font-weight: 500;
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Price column */
+.price {
+    font-weight: 600;
+}
+
+/* Empty orders message */
+.empty-orders {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #222;
+    border-radius: 4px;
+    margin: 30px 0;
+    border: 1px solid #333;
+}
+
+.empty-orders p {
+    font-size: 16px;
+    color: #999;
+    margin-bottom: 20px;
+}
+
+.shop-now-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    background: linear-gradient(to bottom, #ffb500, #e6a400);
+    color: #0c0c0c;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.shop-now-btn:hover {
+    background: linear-gradient(to bottom, #ffc133, #ffb500);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 181, 0, 0.2);
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        margin: 20px;
+    }
+    
+    .orders-table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .orders-header h2 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .orders-header h2 {
+        font-size: 20px;
+    }
+    
+    .orders-table thead th,
+    .orders-table tbody td {
+        padding: 10px;
+        font-size: 12px;
+    }
+}

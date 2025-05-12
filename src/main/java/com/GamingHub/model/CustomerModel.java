@@ -14,7 +14,11 @@ public class CustomerModel {
     private String password;
     private String imageURL;
 
-    public CustomerModel(String username, String password) {
+    public CustomerModel() {
+		super();
+	}
+
+	public CustomerModel(String username, String password) {
 		this.username = username;
 		this.password = password;
 	}

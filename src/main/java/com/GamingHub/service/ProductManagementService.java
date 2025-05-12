@@ -1,46 +1,44 @@
 package com.GamingHub.service;
 
-import com.GamingHub.config.DbConfig;
+import com.GamingHub.dao.ProductDAO;
 import com.GamingHub.model.CategoryModel;
 import com.GamingHub.model.ProductModel;
 
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProductManagementService {
+    private final ProductDAO productDAO = new ProductDAO();
 
     public List<ProductModel> getAllProducts() {
-        List<ProductModel> products = new ArrayList<>();
-        String query = "SELECT * FROM product";
-
-        try (Connection con = DbConfig.getDbConnection();
-             PreparedStatement pst = con.prepareStatement(query);
-             ResultSet rs = pst.executeQuery()) {
-
-            while (rs.next()) {
-                products.add(mapProduct(rs));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return products;
+        return productDAO.getAllProducts();
     }
 
-    private ProductModel mapProduct(ResultSet rs) throws SQLException {
-        CategoryModel category = new CategoryModel(rs.getInt("category_id"), null, null);
-
-        return new ProductModel(
-                rs.getInt("product_id"),
-                rs.getString("product_name"),
-                rs.getString("product_description"),
-                rs.getFloat("price"),
-                rs.getInt("stock_quantity"),
-                rs.getString("brand"),
-                rs.getFloat("discount"),
-                rs.getString("image_url"),
-                category
-        );
+    public ProductModel getProductById(int id) {
+        return productDAO.getProductById(id);
     }
+
+    public boolean addProduct(ProductModel product) {
+        return productDAO.addProduct(product);
+    }
+
+    public boolean updateProduct(ProductModel product) {
+        return productDAO.updateProduct(product);
+    }
+
+    public boolean deleteProduct(int productId) {
+        return productDAO.deleteProduct(productId);
+    }
+    
+    public List<CategoryModel> getAllCategories() {
+        return productDAO.getAllCategories();
+    }
+    
+    public boolean reduceProductQuantity(int productId, int quantity) {
+        return productDAO.reduceQuantity(productId, quantity);
+    }
+    
+    public List<ProductModel> searchProducts(String keyword) {
+        return new ProductDAO().searchProducts(keyword);
+    }
+
 }

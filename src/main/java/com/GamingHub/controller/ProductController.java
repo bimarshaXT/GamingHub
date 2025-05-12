@@ -29,28 +29,30 @@ public class ProductController extends HttpServlet {
             throws ServletException, IOException {
 
         String categoryParam = request.getParameter("category");
+        String searchParam = request.getParameter("search");
         List<ProductModel> products;
 
         try {
-            if (categoryParam != null && !categoryParam.isEmpty()) {
+            if (searchParam != null && !searchParam.trim().isEmpty()) {
+                products = productsService.searchProducts(searchParam.trim());
+            } else if (categoryParam != null && !categoryParam.isEmpty()) {
                 int categoryId = Integer.parseInt(categoryParam);
                 products = productsService.getProductsByCategory(categoryId);
             } else {
-                products = productsService.getAllProducts(); // Get all products, no filtering
+                products = productsService.getAllProducts();
             }
         } catch (NumberFormatException e) {
-            products = productsService.getAllProducts(); // In case of invalid category param
-            categoryParam = null; // Reset selected category
+            products = productsService.getAllProducts();
+            categoryParam = null;
         }
 
         List<CategoryModel> categories = productsService.getAllCategories();
 
-        // Set request attributes for JSP
         request.setAttribute("products", products);
         request.setAttribute("categories", categories);
         request.setAttribute("selectedCategory", categoryParam);
 
-        // Forward to the JSP page
         request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);
     }
+
 }

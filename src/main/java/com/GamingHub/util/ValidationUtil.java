@@ -67,5 +67,39 @@ public class ValidationUtil {
         return Period.between(dob, today).getYears() >= 16;
     }
     
+    // 11. Validate product name (text, max 100 chars)
+    public static boolean isValidProductName(String name) {
+        return name != null && name.length() <= 100;
+    }
 
+    // 12. Validate product description (text, max 255 chars)
+    public static boolean isValidProductDescription(String description) {
+        return description != null && description.length() <= 255;
+    }
+
+    // 13. Validate price (starts with $, float, e.g. $123.45)
+    public static boolean isValidPrice(String price) {
+        return price != null && price.matches("^\\d+(\\.\\d{1,2})?$");
+    }
+
+
+    // 14. Validate stock quantity (strictly numeric)
+    public static boolean isValidStockQuantity(String quantity) {
+        return quantity != null && quantity.matches("^\\d+$");
+    }
+
+    // 15. Validate brand (varchar, max 50 chars)
+    public static boolean isValidBrand(String brand) {
+        return brand != null && brand.length() <= 50;
+    }
+
+    // 16. Validate discount (e.g. 10%, 15.5%)
+    public static boolean isValidDiscount(String discount) {
+        return discount != null && discount.matches("^\\d+(\\.\\d{1,2})?$");
+    }
+
+    // 17. Validate category ID (dropdown, must not be null or empty)
+    public static boolean isValidCategoryId(String categoryId) {
+        return !isNullOrEmpty(categoryId) && categoryId.matches("^\\d+$");
+    }
 }

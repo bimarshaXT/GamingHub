@@ -21,7 +21,7 @@ public class LoginService {
 	public LoginService() {
 		try {
 			dbConn = DbConfig.getDbConnection();
-		} catch (SQLException | ClassNotFoundException ex) {
+		} catch (SQLException ex) {
 			ex.printStackTrace();
 			isConnectionError = true;
 		}
