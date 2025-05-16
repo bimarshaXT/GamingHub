@@ -1,8 +1,8 @@
 package com.GamingHub.controller;
 
 import com.GamingHub.model.ProductModel;
+import com.GamingHub.dao.ProductDAO;
 import com.GamingHub.model.CategoryModel;
-import com.GamingHub.service.ProductService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,15 +13,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(asyncSupported = true, urlPatterns = { "/product"})
+@WebServlet(asyncSupported = true, urlPatterns = { "/product" })
 public class ProductController extends HttpServlet {
 
-    private ProductService productsService;
+    private ProductDAO productDAO;
 
     @Override
     public void init() throws ServletException {
         super.init();
-        productsService = new ProductService();
+        productDAO = new ProductDAO();
     }
 
     @Override
@@ -34,19 +34,19 @@ public class ProductController extends HttpServlet {
 
         try {
             if (searchParam != null && !searchParam.trim().isEmpty()) {
-                products = productsService.searchProducts(searchParam.trim());
+                products = productDAO.searchProducts(searchParam.trim());
             } else if (categoryParam != null && !categoryParam.isEmpty()) {
                 int categoryId = Integer.parseInt(categoryParam);
-                products = productsService.getProductsByCategory(categoryId);
+                products = productDAO.getProductsByCategory(categoryId);
             } else {
-                products = productsService.getAllProducts();
+                products = productDAO.getAllProducts();
             }
         } catch (NumberFormatException e) {
-            products = productsService.getAllProducts();
+            products = productDAO.getAllProducts();
             categoryParam = null;
         }
 
-        List<CategoryModel> categories = productsService.getAllCategories();
+        List<CategoryModel> categories = productDAO.getAllCategories();
 
         request.setAttribute("products", products);
         request.setAttribute("categories", categories);
@@ -54,5 +54,4 @@ public class ProductController extends HttpServlet {
 
         request.getRequestDispatcher("/WEB-INF/pages/product.jsp").forward(request, response);
     }
-
 }

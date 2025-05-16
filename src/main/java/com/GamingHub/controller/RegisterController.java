@@ -10,6 +10,8 @@ import jakarta.servlet.http.Part;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.GamingHub.model.CustomerModel;
 import com.GamingHub.service.RegisterService;
@@ -32,13 +34,13 @@ public class RegisterController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    	String validationError = validateRegistrationForm(req);
-        if (validationError != null) {
-            handleError(req, resp, validationError);
+        Map<String, String> errors = validateRegistrationForm(req);
+        if (!errors.isEmpty()) {
+            handleFieldErrors(req, resp, errors);
             return;
         }
-    	
-    	try {
+
+        try {
             CustomerModel customerModel = extractCustomerModel(req);
             Boolean isAdded = registerService.addCustomer(customerModel);
 
@@ -58,8 +60,10 @@ public class RegisterController extends HttpServlet {
             handleError(req, resp, "An unexpected error occurred. Please try again later!");
         }
     }
-    
-    private String validateRegistrationForm(HttpServletRequest req) {
+
+    private Map<String, String> validateRegistrationForm(HttpServletRequest req) {
+        Map<String, String> errors = new HashMap<>();
+
         String firstName = req.getParameter("first_name");
         String lastName = req.getParameter("last_name");
         String username = req.getParameter("username");
@@ -69,63 +73,61 @@ public class RegisterController extends HttpServlet {
         String number = req.getParameter("number");
         String passwordRaw = req.getParameter("password");
 
-        // 1. Check for null or empty fields
         if (ValidationUtil.isNullOrEmpty(firstName))
-            return "First name is required.";
+            errors.put("first_name_error", "First name is required.");
         if (ValidationUtil.isNullOrEmpty(lastName))
-            return "Last name is required.";
+            errors.put("last_name_error", "Last name is required.");
         if (ValidationUtil.isNullOrEmpty(username))
-            return "Username is required.";
+            errors.put("username_error", "Username is required.");
         if (ValidationUtil.isNullOrEmpty(dobStr))
-            return "Date of birth is required.";
+            errors.put("dob_error", "Date of birth is required.");
         if (ValidationUtil.isNullOrEmpty(gender))
-            return "Gender is required.";
+            errors.put("gender_error", "Gender is required.");
         if (ValidationUtil.isNullOrEmpty(email))
-            return "Email is required.";
+            errors.put("email_error", "Email is required.");
         if (ValidationUtil.isNullOrEmpty(number))
-            return "Phone number is required.";
+            errors.put("number_error", "Phone number is required.");
         if (ValidationUtil.isNullOrEmpty(passwordRaw))
-            return "Password is required.";
+            errors.put("password_error", "Password is required.");
 
-        // 2. Parse date
-        LocalDate dob;
-        try {
-            dob = LocalDate.parse(dobStr);
-        } catch (Exception e) {
-            return "Invalid date format. Please use YYYY-MM-DD.";
+        if (!ValidationUtil.isNullOrEmpty(dobStr)) {
+            try {
+                LocalDate dob = LocalDate.parse(dobStr);
+                if (!ValidationUtil.isAgeAtLeast16(dob))
+                    errors.put("dob_error", "You must be at least 16 years old to register.");
+            } catch (Exception e) {
+                errors.put("dob_error", "Invalid date format. Use YYYY-MM-DD.");
+            }
+        };
+        
+        if (!ValidationUtil.isValidName(lastName)) {
+            errors.put("last_name_error", "Last name must contain only letters and no spaces.");
         }
-
-        // 3. Validate fields
+        if (!ValidationUtil.isValidName(firstName)) {
+            errors.put("first_name_error", "First name must contain only letters and no spaces.");
+        }
         if (!ValidationUtil.isAlphanumericStartingWithLetter(username))
-            return "Username must start with a letter and contain only letters and numbers.";
+            errors.put("username_error", "Username must start with a letter and contain only letters and numbers.");
         if (!ValidationUtil.isValidGender(gender))
-            return "Gender must be 'male' or 'female'.";
+            errors.put("gender_error", "Gender must be 'male' or 'female'.");
         if (!ValidationUtil.isValidEmail(email))
-            return "Invalid email format.";
+            errors.put("email_error", "Invalid email format.");
         if (!ValidationUtil.isValidPhoneNumber(number))
-            return "Phone number must be 10 digits and start with 98.";
+            errors.put("number_error", "Phone number must be 10 digits and start with 98.");
         if (!ValidationUtil.isValidPassword(passwordRaw))
-            return "Password must be at least 8 characters long, with 1 uppercase letter, 1 number, and 1 symbol.";
+            errors.put("password_error", "Password must be at least 8 characters, 1 uppercase, 1 number, and 1 symbol.");
 
-        if (!ValidationUtil.isAgeAtLeast16(dob))
-            return "You must be at least 16 years old to register.";
-
-        // 4. Validate image upload
         try {
             Part image = req.getPart("image");
-            if (image != null && image.getSize() > 0) {
-                if (!ValidationUtil.isValidImageExtension(image))
-                    return "Invalid image format. Only jpg, jpeg, png, webp and gif are allowed.";
+            if (image != null && image.getSize() > 0 && !ValidationUtil.isValidImageExtension(image)) {
+                errors.put("image_error", "Invalid image format. Only jpg, jpeg, png, webp, gif allowed.");
             }
         } catch (IOException | ServletException e) {
-            return "Error handling image file. Please ensure the file is valid.";
+            errors.put("image_error", "Error handling the uploaded image.");
         }
-        
-        
 
-        return null; // Everything validated
+        return errors;
     }
-
 
     private CustomerModel extractCustomerModel(HttpServletRequest req) throws Exception {
         String firstName = req.getParameter("first_name");
@@ -146,8 +148,24 @@ public class RegisterController extends HttpServlet {
     private boolean uploadImage(HttpServletRequest req) throws IOException, ServletException {
         Part image = req.getPart("image");
         return image != null && image.getSize() > 0
-            ? imageUtil.uploadImage(image, req.getServletContext().getRealPath("/"), "customer")
-            : true;
+                ? imageUtil.uploadImage(image, req.getServletContext().getRealPath("/"), "customer")
+                : true;
+    }
+
+    private void handleFieldErrors(HttpServletRequest req, HttpServletResponse resp, Map<String, String> errors)
+            throws ServletException, IOException {
+        for (Map.Entry<String, String> entry : errors.entrySet()) {
+            req.setAttribute(entry.getKey(), entry.getValue());
+        }
+
+        req.setAttribute("first_name", req.getParameter("first_name"));
+        req.setAttribute("last_name", req.getParameter("last_name"));
+        req.setAttribute("username", req.getParameter("username"));
+        req.setAttribute("dob", req.getParameter("dob"));
+        req.setAttribute("gender", req.getParameter("gender"));
+        req.setAttribute("email", req.getParameter("email"));
+        req.setAttribute("number", req.getParameter("number"));
+        req.getRequestDispatcher("/WEB-INF/pages/registration.jsp").forward(req, resp);
     }
 
     private void handleSuccess(HttpServletRequest req, HttpServletResponse resp, String message, String redirectPage)
@@ -159,14 +177,6 @@ public class RegisterController extends HttpServlet {
     private void handleError(HttpServletRequest req, HttpServletResponse resp, String message)
             throws ServletException, IOException {
         req.setAttribute("error", message);
-        req.setAttribute("first_name", req.getParameter("first_name"));
-        req.setAttribute("last_name", req.getParameter("last_name"));
-        req.setAttribute("username", req.getParameter("username"));
-        req.setAttribute("dob", req.getParameter("dob"));
-        req.setAttribute("gender", req.getParameter("gender"));
-        req.setAttribute("email", req.getParameter("email"));
-        req.setAttribute("number", req.getParameter("number"));
-        req.getRequestDispatcher("/WEB-INF/pages/registration.jsp").forward(req, resp);
+        handleFieldErrors(req, resp, new HashMap<>());
     }
-
 }

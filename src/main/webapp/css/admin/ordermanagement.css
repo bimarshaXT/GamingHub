@@ -12,6 +12,35 @@ body {
     line-height: 1.6;
 }
 
+/* Search Bar and Button styling */
+.sticky-header form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    max-width: 800px;
+}
+
+.sticky-header input[type="text"] {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid #333;
+    background-color: #1a1a1a;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 14px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.sticky-header input[type="text"]:focus {
+    border-color: #ffb500;
+    outline: none;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.sticky-header input[type="text"]::placeholder {
+    color: #777;
+}
 /* Dashboard Layout */
 .dashboard {
     display: grid;

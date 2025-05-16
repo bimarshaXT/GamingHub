@@ -136,6 +136,20 @@ public class ProductDAO {
 
         return false;
     }
+    
+    public boolean isProductReferencedInOrders(int productId) {
+        String query = "SELECT 1 FROM customer_order WHERE product_id = ? LIMIT 1";
+        try (Connection con = DbConfig.getDbConnection();
+             PreparedStatement pst = con.prepareStatement(query)) {
+            pst.setInt(1, productId);
+            ResultSet rs = pst.executeQuery();
+            return rs.next(); // returns true if at least one reference exists
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
     private ProductModel mapProduct(ResultSet rs) throws SQLException {
         CategoryModel category = new CategoryModel(
@@ -199,6 +213,30 @@ public class ProductDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+
+        return products;
+    }
+
+    public List<ProductModel> getProductsByCategory(int categoryId) {
+        List<ProductModel> products = new ArrayList<>();
+        String sql = "SELECT p.*, c.category_name, c.category_description " +
+                     "FROM product p " +
+                     "JOIN category c ON p.category_id = c.category_id " +
+                     "WHERE p.category_id = ?";
+
+        try (Connection conn = DbConfig.getDbConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, categoryId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    products.add(mapProduct(rs));
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Use logger in production
         }
 
         return products;

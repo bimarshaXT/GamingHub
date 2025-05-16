@@ -6,7 +6,7 @@
 <html>
 <head>
     <title>${product.product_name} - Product Details</title>
-    <link rel="stylesheet" type="text/css" href="${contextPath}/css/viewproduct.css?v=1.1" />
+    <link rel="stylesheet" type="text/css" href="${contextPath}/css/viewproduct.css?v=1.3" />
 </head>
 <body>
 

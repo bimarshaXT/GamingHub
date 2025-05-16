@@ -144,6 +144,54 @@ body {
     font-weight: 600;
 }
 
+/* Button Styles */
+.view-orders {
+  display: inline-block;
+  background: linear-gradient(to bottom, #2e2e2e, #1a1a1a);
+  color: #ffb500;
+  border: 1px solid #ffb500;
+  border-radius: 4px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  box-shadow: 0 0 10px rgba(255, 181, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.view-orders:hover {
+  background: linear-gradient(to bottom, #ffb500, #e6a100);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 181, 0, 0.4);
+}
+
+.view-orders:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 10px rgba(255, 181, 0, 0.3);
+}
+
+
+.view-orders:hover::after {
+  left: 100%;
+}
+
+/* You might also want to add some spacing between buttons */
+.buy-now {
+  margin-right: 15px;
+}
+
+/* For proper button grouping */
+#orderForm, #orderPageForm {
+  display: inline-block;
+  vertical-align: top;
+}
+
 /* Buy now button */
 .buy-now {
     display: block;
@@ -244,4 +292,5 @@ label[for="quantity"] {
         padding: 10px 0;
         font-size: 14px;
     }
+
 }

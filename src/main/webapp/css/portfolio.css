@@ -79,26 +79,88 @@ h1::after {
     filter: brightness(1) drop-shadow(0 0 3px rgba(255, 181, 0, 0.5));
 }
 
-.profile-image-wrapper {
-    flex: 0 0 200px;
-    height: 200px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 3px solid #333333;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    margin: 0 auto;
+/* Profile Image Styling */
+.profile-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 25px;
+    position: relative;
+    width: 100%;
 }
 
 .profile-image {
-    width: 100%;
-    height: 100%;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
     object-fit: cover;
+    border: 3px solid #333333;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    margin: 0 auto 15px;
 }
 
-.profile-image-wrapper:hover {
+.profile-image:hover {
     border-color: #ffb500;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 181, 0, 0.3);
+}
+
+.image-upload-section {
+    width: 100%;
+    max-width: 300px;
+    background-color: #222222;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 15px;
+    text-align: center;
+    border: 1px solid #333333;
+    position: relative;
+    transition: border-color 0.3s ease;
+}
+
+.image-upload-section:hover {
+    border-color: #ffb500;
+}
+
+.image-upload-section::before {
+    content: 'Change Profile Picture';
+    display: block;
+    margin-bottom: 10px;
+    color: #999999;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    background-color: #0c0c0c;
+    color: #ffffff;
+    padding: 10px 15px;
+    border: 1px solid #ffb500;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.custom-file-upload:hover {
+    background-color: rgba(255, 181, 0, 0.1);
+    box-shadow: 0 0 8px rgba(255, 181, 0, 0.2);
+}
+
+.file-name {
+    display: block;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #999999;
+    word-break: break-all;
+}
+
+input[type="file"] {
+    display: none;
 }
 
 .info {
@@ -156,6 +218,65 @@ select:focus {
     box-shadow: 0 0 8px rgba(255, 181, 0, 0.2);
 }
 
+/* Button Styling */
+button[type="submit"], 
+.cancel-btn {
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+}
+
+button[type="submit"] {
+    background-color: #ffb500;
+    color: #0c0c0c;
+    border: none;
+    box-shadow: 0 3px 10px rgba(255, 181, 0, 0.2);
+}
+
+button[type="submit"]:hover {
+    background-color: #ffc233;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 181, 0, 0.3);
+}
+
+.cancel-btn {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid #ff3333;
+    text-decoration: none;
+    padding: 11px 19px;
+    display: inline-block;
+}
+
+.cancel-btn:hover {
+    background-color: rgba(255, 51, 51, 0.1);
+    border-color: #ff5555;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(255, 51, 51, 0.2);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* Error Message Styling */
+.error-message {
+    background-color: rgba(255, 51, 51, 0.1);
+    border-left: 3px solid #ff3333;
+    color: #ff5555;
+    padding: 12px 15px;
+    margin: 20px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -163,19 +284,31 @@ select:focus {
         padding: 20px;
         margin: 20px;
     }
-    
+
     .profile-box {
         flex-direction: column;
         align-items: center;
         text-align: center;
     }
-    
+
     .info {
         width: 100%;
     }
-    
+
     .info strong {
         width: auto;
         margin-right: 10px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    button[type="submit"],
+    .cancel-btn {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
     }
 }

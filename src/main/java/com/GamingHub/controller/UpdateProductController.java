@@ -1,8 +1,8 @@
 package com.GamingHub.controller;
 
+import com.GamingHub.dao.ProductDAO;
 import com.GamingHub.model.CategoryModel;
 import com.GamingHub.model.ProductModel;
-import com.GamingHub.service.ProductManagementService;
 import com.GamingHub.util.ImageUtil;
 import com.GamingHub.util.ValidationUtil;
 
@@ -18,14 +18,14 @@ import java.util.List;
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024 * 1024 * 10, maxRequestSize = 1024 * 1024 * 50)
 public class UpdateProductController extends HttpServlet {
 
-    private final ProductManagementService productService = new ProductManagementService();
+    private final ProductDAO productDAO = new ProductDAO();
     private final ImageUtil imageUtil = new ImageUtil();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int productId = Integer.parseInt(req.getParameter("id"));
-        ProductModel product = productService.getProductById(productId);
-        List<CategoryModel> categoryList = productService.getAllCategories();
+        ProductModel product = productDAO.getProductById(productId);
+        List<CategoryModel> categoryList = productDAO.getAllCategories();
 
         req.setAttribute("product", product);
         req.setAttribute("categoryList", categoryList);
@@ -46,7 +46,7 @@ public class UpdateProductController extends HttpServlet {
             ProductModel updatedProduct = extractProduct(req);
 
             // Step 3: Update in DB
-            boolean isUpdated = productService.updateProduct(updatedProduct);
+            boolean isUpdated = productDAO.updateProduct(updatedProduct);
             if (isUpdated) {
                 resp.sendRedirect(req.getContextPath() + "/productmanagement");
             } else {
@@ -131,7 +131,7 @@ public class UpdateProductController extends HttpServlet {
             imageUrl = imageName;
         } else {
             // If no new image uploaded, retain the old image URL
-            ProductModel existing = productService.getProductById(productId);
+            ProductModel existing = productDAO.getProductById(productId);
             imageUrl = existing.getImage_url();
         }
 
@@ -144,7 +144,7 @@ public class UpdateProductController extends HttpServlet {
         req.setAttribute("error", errorMsg);
 
         // Repopulate category list
-        List<CategoryModel> categoryList = productService.getAllCategories();
+        List<CategoryModel> categoryList = productDAO.getAllCategories();
         req.setAttribute("categoryList", categoryList);
 
         int productId = parseIntSafe(req.getParameter("product_id"));
@@ -158,7 +158,6 @@ public class UpdateProductController extends HttpServlet {
 
         CategoryModel category = new CategoryModel(categoryId, null, null);
         ProductModel preserved = new ProductModel(productId, name, description, price, stock, brand, discount, null, category);
-
 
         req.setAttribute("product", preserved);
         req.getRequestDispatcher("/WEB-INF/pages/admin/updateproduct.jsp").forward(req, resp);

@@ -38,16 +38,31 @@ public class UserManagementController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Handle delete operation or other post actions
         String action = request.getParameter("action");
-        
+
         if ("delete".equals(action)) {
             int customerId = Integer.parseInt(request.getParameter("customerId"));
-            customerDAO.deleteCustomerById(customerId);
+
+            if (customerDAO.hasOrders(customerId)) {
+                // If customer has orders, forward back with error
+                request.setAttribute("errorMessage", "Cannot delete customer with existing orders.");
+                
+                // Repopulate the customer list
+                List<CustomerModel> customers = customerDAO.getAllCustomers();
+                request.setAttribute("customers", customers);
+                
+                // Forward to the JSP
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/pages/admin/usermanagement.jsp");
+                dispatcher.forward(request, response);
+                return;
+            } else {
+                customerDAO.deleteCustomerById(customerId);
+            }
         }
 
-        // Redirect to user management page after action
+        // If no issues, just redirect
         response.sendRedirect(request.getContextPath() + "/usermanagement");
     }
+
 }
 

@@ -1,11 +1,10 @@
 package com.GamingHub.controller;
 
 import com.GamingHub.dao.CustomerDAO;
+import com.GamingHub.dao.OrderDAO;
 import com.GamingHub.dao.ProductDAO;
 import com.GamingHub.model.CustomerModel;
 import com.GamingHub.model.ProductModel;
-import com.GamingHub.service.OrderService;
-import com.GamingHub.service.ProductManagementService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,19 +14,20 @@ import java.io.IOException;
 
 @WebServlet("/product/details")
 public class ViewProductController extends HttpServlet {
-    private final OrderService orderService = new OrderService();
-    private final ProductManagementService productService = new ProductManagementService();
+    private final ProductDAO productDAO = new ProductDAO();
+    private final CustomerDAO customerDAO = new CustomerDAO();
+    private final OrderDAO orderDAO = new OrderDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String productIdParam = request.getParameter("id");
 
         if (productIdParam != null) {
             try {
                 int productId = Integer.parseInt(productIdParam);
-                ProductModel product = productService.getProductById(productId);
+                ProductModel product = productDAO.getProductById(productId);
 
                 if (product != null) {
                     request.setAttribute("product", product);
@@ -45,7 +45,9 @@ public class ViewProductController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("username") == null) {
             resp.sendRedirect(req.getContextPath() + "/login");
@@ -53,7 +55,6 @@ public class ViewProductController extends HttpServlet {
         }
 
         String username = (String) session.getAttribute("username");
-        CustomerDAO customerDAO = new CustomerDAO();
         CustomerModel customer = customerDAO.getCustomerByUsername(username);
 
         if (customer == null) {
@@ -63,15 +64,9 @@ public class ViewProductController extends HttpServlet {
         }
 
         try {
-            // Get form parameters
             int productId = Integer.parseInt(req.getParameter("productId"));
             int quantity = Integer.parseInt(req.getParameter("quantity"));
 
-            // Log the received data
-            System.out.println("Product ID: " + productId);
-            System.out.println("Quantity: " + quantity);
-            
-            ProductDAO productDAO = new ProductDAO();
             ProductModel product = productDAO.getProductById(productId);
 
             if (product == null) {
@@ -86,21 +81,17 @@ public class ViewProductController extends HttpServlet {
                 return;
             }
 
-            /// Apply discount if any
+            // Calculate total price with discount
             float price = product.getPrice();
             float discount = product.getDiscount();
             float discountedPrice = price - (price * discount / 100);
             float totalPrice = discountedPrice * quantity;
 
-
-            // Place the order
-            boolean success = orderService.placeOrder(customer.getCustomer_id(), productId, quantity, totalPrice);
+            boolean success = orderDAO.placeOrder(customer.getCustomer_id(), productId, quantity, totalPrice);
 
             if (success) {
-                // If the order is placed successfully, redirect to confirmation page
                 resp.sendRedirect(req.getContextPath() + "/order");
             } else {
-                // If the order placement failed, show error
                 req.setAttribute("error", "Order failed. Maybe out of stock?");
                 req.getRequestDispatcher("/WEB-INF/pages/error.jsp").forward(req, resp);
             }
@@ -110,5 +101,4 @@ public class ViewProductController extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/pages/error.jsp").forward(req, resp);
         }
     }
-
 }

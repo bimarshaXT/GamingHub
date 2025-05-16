@@ -12,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Order Management</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/ordermanagement.css?v=1.1" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/ordermanagement.css?v=1.2" />
     <style>
         table img {
             width: 60px;

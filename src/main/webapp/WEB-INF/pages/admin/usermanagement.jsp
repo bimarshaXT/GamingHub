@@ -1,5 +1,7 @@
 <%@ page import="java.util.*, com.GamingHub.model.CustomerModel"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 
 <%
 List<CustomerModel> customers = (List<CustomerModel>) request.getAttribute("customers");
@@ -12,7 +14,7 @@ String contextPath = request.getContextPath();
 <meta charset="UTF-8">
 <title>User Management</title>
 <link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/css/admin/usermanagement.css?v=1.3" />
+	href="${pageContext.request.contextPath}/css/admin/usermanagement.css?v=1.5" />
 </head>
 
 <body>
@@ -30,19 +32,19 @@ String contextPath = request.getContextPath();
 				<li><a href="${pageContext.request.contextPath}/logout">Logout</a></li>
 			</ul>
 		</div>
+		<c:if test="${not empty errorMessage}">
+			<div style="color: red; font-weight: bold; margin-bottom: 15px;">${errorMessage}</div>
+		</c:if>
+
 
 		<h1>User Management</h1>
 
 		<!-- Button Bar -->
 		<div class="button-bar">
-			<form method="get"
-				action="${pageContext.request.contextPath}/addcustomer">
-				<button type="submit">Add Customer</button>
-			</form>
-
 			<form method="post"
-				action="${pageContext.request.contextPath}/deletecustomer"
+				action="${pageContext.request.contextPath}/usermanagement"
 				id="deleteForm">
+				<input type="hidden" name="action" value="delete" />
 				<button type="submit" id="deleteButton" class="disabled" disabled>Delete
 					Customer</button>
 			</form>
@@ -58,10 +60,13 @@ String contextPath = request.getContextPath();
 						<i class="fas fa-search"></i> Search
 					</button>
 					<!-- Reset Button -->
-					<button type="button" onclick="window.location.href='${pageContext.request.contextPath}/usermanagement'">Reset</button>
+					<button type="button"
+						onclick="window.location.href='${pageContext.request.contextPath}/usermanagement'">Reset</button>
 				</form>
 			</div>
 		</div>
+
+
 
 		<!-- User Table -->
 		<table>

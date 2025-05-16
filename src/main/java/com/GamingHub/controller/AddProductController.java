@@ -3,7 +3,6 @@ package com.GamingHub.controller;
 import com.GamingHub.dao.ProductDAO;
 import com.GamingHub.model.CategoryModel;
 import com.GamingHub.model.ProductModel;
-import com.GamingHub.service.ProductManagementService;
 import com.GamingHub.util.ImageUtil;
 import com.GamingHub.util.ValidationUtil;
 
@@ -13,118 +12,102 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(asyncSupported = true, urlPatterns = { "/addproduct" })
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024 * 1024 * 10, maxRequestSize = 1024 * 1024 * 50)
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024 * 2,
+    maxFileSize = 1024 * 1024 * 10,
+    maxRequestSize = 1024 * 1024 * 50
+)
 public class AddProductController extends HttpServlet {
 
-    private final ProductManagementService productService = new ProductManagementService();
+    private final ProductDAO productDAO = new ProductDAO();
     private final ImageUtil imageUtil = new ImageUtil();
 
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProductDAO productDAO = new ProductDAO();
         List<CategoryModel> categoryList = productDAO.getAllCategories();
-
         req.setAttribute("categoryList", categoryList);
         req.getRequestDispatcher("/WEB-INF/pages/admin/addproduct.jsp").forward(req, resp);
     }
 
-    
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            // Step 1: Validate the form
-            String errorMsg = validateForm(req);
-            if (errorMsg != null) {
-                // If validation fails, handle the error and return
-                handleError(req, resp, errorMsg);
+            Map<String, String> fieldErrors = validateForm(req);
+            if (!fieldErrors.isEmpty()) {
+                req.setAttribute("fieldErrors", fieldErrors);
+                handleError(req, resp, null);
                 return;
             }
 
-            // Step 2: Extract product data from the request
             ProductModel product = extractProduct(req);
+            boolean isAdded = productDAO.addProduct(product);
 
-            // Step 3: Add product using the service
-            boolean isAdded = productService.addProduct(product);
-
-            // Step 4: Handle success or failure
             if (isAdded) {
-                req.setAttribute("success", "Product added successfully!");
-                // Redirect to another page after success (to prevent resubmission)
-                resp.sendRedirect(req.getContextPath() + "/productmanagement"); // Redirect to product management page
-                return;
+                resp.sendRedirect(req.getContextPath() + "/productmanagement");
             } else {
-                req.setAttribute("error", "Failed to add product.");
+                handleError(req, resp, "Failed to add product.");
             }
-
-            // Step 5: Retain the category_id and categoryList in case of an error
-            req.setAttribute("category_id", Integer.parseInt(req.getParameter("category_id")));
-            // Fetch and set the category list for the dropdown
-            ProductDAO productDAO = new ProductDAO();
-            List<CategoryModel> categoryList = productDAO.getAllCategories();
-            req.setAttribute("categoryList", categoryList);
-
-            // Step 6: Forward to the add-product.jsp with error or success messages
-            req.getRequestDispatcher("/WEB-INF/pages/admin/addproduct.jsp").forward(req, resp);
 
         } catch (Exception e) {
-            e.printStackTrace(); // Ideally, use a logger here to log the error
-            req.setAttribute("error", "An error occurred while adding the product.");
-            req.getRequestDispatcher("/WEB-INF/admin/pages/addproduct.jsp").forward(req, resp);
+            e.printStackTrace();
+            handleError(req, resp, "An error occurred while adding the product.");
         }
     }
 
+    private Map<String, String> validateForm(HttpServletRequest req) {
+        Map<String, String> errors = new HashMap<>();
 
-    private String validateForm(HttpServletRequest req) {
         if (ValidationUtil.isNullOrEmpty(req.getParameter("product_name")))
-            return "Product name is required.";
-        if (!ValidationUtil.isValidProductName(req.getParameter("product_name")))
-            return "Invalid product name.";
+            errors.put("product_name", "Product name is required.");
+        else if (!ValidationUtil.isValidProductName(req.getParameter("product_name")))
+            errors.put("product_name", "Invalid product name.");
 
         if (ValidationUtil.isNullOrEmpty(req.getParameter("product_description")))
-            return "Product description is required.";
-        if (!ValidationUtil.isValidProductDescription(req.getParameter("product_description")))
-            return "Invalid description.";
+            errors.put("product_description", "Product description is required.");
+        else if (!ValidationUtil.isValidProductDescription(req.getParameter("product_description")))
+            errors.put("product_description", "Invalid description.");
 
         if (ValidationUtil.isNullOrEmpty(req.getParameter("price")))
-            return "Price is required.";
-        if (!ValidationUtil.isValidPrice(req.getParameter("price")))
-            return "Invalid price.";
+            errors.put("price", "Price is required.");
+        else if (!ValidationUtil.isValidPrice(req.getParameter("price")))
+            errors.put("price", "Invalid price.");
 
         if (ValidationUtil.isNullOrEmpty(req.getParameter("stock_quantity")))
-            return "Stock quantity is required.";
-        if (!ValidationUtil.isValidStockQuantity(req.getParameter("stock_quantity")))
-            return "Invalid stock quantity.";
+            errors.put("stock_quantity", "Stock quantity is required.");
+        else if (!ValidationUtil.isValidStockQuantity(req.getParameter("stock_quantity")))
+            errors.put("stock_quantity", "Invalid stock quantity.");
 
         if (ValidationUtil.isNullOrEmpty(req.getParameter("brand")))
-            return "Brand is required.";
-        if (!ValidationUtil.isValidBrand(req.getParameter("brand")))
-            return "Invalid brand.";
+            errors.put("brand", "Brand is required.");
+        else if (!ValidationUtil.isValidBrand(req.getParameter("brand")))
+            errors.put("brand", "Invalid brand.");
 
         if (ValidationUtil.isNullOrEmpty(req.getParameter("discount")))
-            return "Discount is required.";
-        if (!ValidationUtil.isValidDiscount(req.getParameter("discount")))
-            return "Invalid discount.";
+            errors.put("discount", "Discount is required.");
+        else if (!ValidationUtil.isValidDiscount(req.getParameter("discount")))
+            errors.put("discount", "Invalid discount.");
 
         if (ValidationUtil.isNullOrEmpty(req.getParameter("category_id")))
-            return "Category must be selected.";
-        if (!ValidationUtil.isValidCategoryId(req.getParameter("category_id")))
-            return "Invalid category selection.";
+            errors.put("category_id", "Category must be selected.");
+        else if (!ValidationUtil.isValidCategoryId(req.getParameter("category_id")))
+            errors.put("category_id", "Invalid category selection.");
 
         try {
             Part image = req.getPart("image_url");
-            if (image == null || image.getSize() == 0) {
-                return "Product image is required.";
-            }
-            if (!ValidationUtil.isValidImageExtension(image)) {
-                return "Invalid image format.";
-            }
-        } catch (IOException | ServletException e) {
-            return "Image processing failed.";
+            if (image == null || image.getSize() == 0)
+                errors.put("image_url", "Product image is required.");
+            else if (!ValidationUtil.isValidImageExtension(image))
+                errors.put("image_url", "Invalid image format.");
+        } catch (Exception e) {
+            errors.put("image_url", "Image processing failed.");
         }
 
-        return null;
+        return errors;
     }
 
     private ProductModel extractProduct(HttpServletRequest req) throws Exception {
@@ -138,25 +121,28 @@ public class AddProductController extends HttpServlet {
 
         Part image = req.getPart("image_url");
         String imageName = imageUtil.getImageNameFromPart(image);
-        uploadImage(req, imageName);
+        imageUtil.uploadImage(image, req.getServletContext().getRealPath("/"), "products");
 
         CategoryModel category = new CategoryModel(categoryId, null, null);
         return new ProductModel(0, name, desc, price, stock, brand, discount, imageName, category);
     }
 
-    private boolean uploadImage(HttpServletRequest req, String imageName) throws IOException, ServletException {
-        Part image = req.getPart("image_url");
-        return image != null && image.getSize() > 0
-                ? imageUtil.uploadImage(image, req.getServletContext().getRealPath("/"), "products")
-                : true;
-    }
-
     private void handleError(HttpServletRequest req, HttpServletResponse resp, String errorMsg)
             throws ServletException, IOException {
-        req.setAttribute("addProductError", errorMsg);
-        for (String param : new String[]{"product_name", "product_description", "price", "stock_quantity", "brand", "discount", "category_id"}) {
+        if (errorMsg != null) {
+            req.setAttribute("addProductError", errorMsg);
+        }
+
+        for (String param : new String[]{
+                "product_name", "product_description", "price", "stock_quantity",
+                "brand", "discount", "category_id"
+        }) {
             req.setAttribute(param, req.getParameter(param));
         }
+
+        List<CategoryModel> categoryList = productDAO.getAllCategories();
+        req.setAttribute("categoryList", categoryList);
+
         req.getRequestDispatcher("/WEB-INF/pages/admin/addproduct.jsp").forward(req, resp);
     }
 }
