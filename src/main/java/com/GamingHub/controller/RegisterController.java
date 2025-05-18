@@ -120,7 +120,7 @@ public class RegisterController extends HttpServlet {
         try {
             Part image = req.getPart("image");
             if (image != null && image.getSize() > 0 && !ValidationUtil.isValidImageExtension(image)) {
-                errors.put("image_error", "Invalid image format. Only jpg, jpeg, png, webp, gif allowed.");
+                errors.put("image_error", "Invalid image format. Only jpg, jpeg, png, webp, gif, .avif allowed.");
             }
         } catch (IOException | ServletException e) {
             errors.put("image_error", "Error handling the uploaded image.");

@@ -205,12 +205,6 @@
                 <h2>Daily Sales</h2>
                 <canvas id="dailyChart"></canvas>
             </div>
-
-            <!-- Average Price Bar Chart -->
-            <div class="chart-container">
-                <h2>Average Price by Category</h2>
-                <canvas id="priceChart"></canvas>
-            </div>
         </div>
     </div>
 
@@ -288,76 +282,6 @@
                             }
                         },
                         x: {
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            ticks: {
-                                color: '#cccccc'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#ffffff'
-                            }
-                        }
-                    }
-                }
-            }
-        );
-
-        // Simple Price Bar Chart
-        new Chart(
-            document.getElementById('priceChart'),
-            {
-                type: 'bar',
-                data: {
-                    labels: [
-                        <c:forEach var="entry" items="${avgPricePerCategory}">
-                            '${entry.key}',
-                        </c:forEach>
-                    ],
-                    datasets: [{
-                        label: 'Average Price ($)',
-                        data: [
-                            <c:forEach var="entry" items="${avgPricePerCategory}">
-                                ${entry.value},
-                            </c:forEach>
-                        ],
-                        backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Price ($)',
-                                font: {
-                                    weight: 'bold'
-                                },
-                                color: '#ffffff'
-                            },
-                            grid: {
-                                color: 'rgba(255, 255, 255, 0.1)'
-                            },
-                            ticks: {
-                                color: '#cccccc'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Product Categories',
-                                font: {
-                                    weight: 'bold'
-                                },
-                                color: '#ffffff'
-                            },
                             grid: {
                                 color: 'rgba(255, 255, 255, 0.1)'
                             },

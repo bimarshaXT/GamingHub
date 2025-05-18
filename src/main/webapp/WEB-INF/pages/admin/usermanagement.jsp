@@ -14,7 +14,7 @@ String contextPath = request.getContextPath();
 <meta charset="UTF-8">
 <title>User Management</title>
 <link rel="stylesheet" type="text/css"
-	href="${pageContext.request.contextPath}/css/admin/usermanagement.css?v=1.5" />
+	href="${pageContext.request.contextPath}/css/admin/usermanagement.css?v=1.5.1" />
 </head>
 
 <body>

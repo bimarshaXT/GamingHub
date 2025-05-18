@@ -61,7 +61,7 @@ public class LoginController extends HttpServlet {
         if ("admin".equals(username) && "admin@123GH".equals(password)) {
             SessionUtil.setAttribute(req, "username", username);
             SessionUtil.setAttribute(req, "role", "admin");
-            CookieUtil.addCookie(resp, "role", "admin", 30); 
+            CookieUtil.addCookie(resp, "role", "admin", 300); 
             resp.sendRedirect(req.getContextPath() + "/dashboard");
             return;
         }
@@ -74,7 +74,7 @@ public class LoginController extends HttpServlet {
             // If login successful, create session and cookie for the customer
             SessionUtil.setAttribute(req, "username", username);
             SessionUtil.setAttribute(req, "role", "customer");
-            CookieUtil.addCookie(resp, "role", "customer", 30);
+            CookieUtil.addCookie(resp, "role", "customer", 300);
             resp.sendRedirect(req.getContextPath() + "/Home");
         } else {
             handleLoginFailure(req, resp, loginStatus);

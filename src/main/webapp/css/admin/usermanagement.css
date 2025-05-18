@@ -49,8 +49,8 @@ body {
 }
 
 .sidebar .menu li a:hover, .sidebar .menu li a.active {
-    background-color: #ffb500;
-    color: #000;
+    background-color: #333333;
+    color: #ffffff;
 }
 
 /* Header Styling */

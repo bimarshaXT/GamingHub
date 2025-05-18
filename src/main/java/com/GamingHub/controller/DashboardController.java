@@ -24,7 +24,6 @@ public class DashboardController extends HttpServlet {
             req.setAttribute("totalRevenue", dao.getTotalRevenue());
             req.setAttribute("categorySales", dao.getCategorySalesData());
             req.setAttribute("dailySales", dao.getDailySalesData());
-            req.setAttribute("avgPricePerCategory", dao.getCategoryAveragePrices());
 
             req.getRequestDispatcher("/WEB-INF/pages/admin/dashboard.jsp").forward(req, resp);
         } catch (SQLException e) {

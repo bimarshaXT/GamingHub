@@ -1,19 +1,20 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/footer.css?v=1.2">
 
+<!-- Newsletter Section -->
 <section class="newsletter">
-        <div class="container">
-            <h2 class="newsletter-title">Subscribe to our newsletter</h2>
-            <p class="newsletter-description">
-                Stay updated with our latest products, offers, and announcements.
-            </p>
-            <form class="newsletter-form">
-                <input type="email" class="newsletter-input" placeholder="Enter your email address">
-                <button type="submit" class="newsletter-btn">Subscribe</button>
-            </form>
-        </div>
-    </section>
-    
-    <!-- Social Media -->
+    <div class="container">
+        <h2 class="newsletter-title">Subscribe to our newsletter</h2>
+        <p class="newsletter-description">
+            Stay updated with our latest products, offers, and announcements.
+        </p>
+        <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Enter your email address">
+            <button type="submit" class="newsletter-btn">Subscribe</button>
+        </form>
+    </div>
+</section>
+
+ <!-- Social Media -->
     <section class="social-media">
         <div class="container">
             <h3 class="social-title">Follow us on social media</h3>
@@ -38,53 +39,34 @@
             </div>
         </div>
     </section>
-    
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>GG Syndicate</h3>
-                    <ul class="footer-links">
-                        <li><a href="${pageContext.request.contextPath}/aboutus">About Us</a></li>
-                        <li><a href="#">Our Team</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Press</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Products</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">All Products</a></li>
-                        <li><a href="#">New Arrivals</a></li>
-                        <li><a href="#">Featured</a></li>
-                        <li><a href="#">Discounts</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Support</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="${pageContext.request.contextPath}/contactus">Contact Us</a></li>
-                        <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Shipping Info</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Legal</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Refund Policy</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
-                    </ul>
-                </div>
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>GG Syndicate</h3>
+                <ul class="footer-links">
+                    <li><a href="${pageContext.request.contextPath}/aboutus">About Us</a></li>
+                </ul>
             </div>
-            
-            <div class="copyright">
-                &copy; 2025 GG Syndicate. All rights reserved.
+
+            <div class="footer-column">
+                <h3>Products</h3>
+                <ul class="footer-links">
+                    <li><a href="${pageContext.request.contextPath}/product">All Products</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="${pageContext.request.contextPath}/contactus">Contact Us</a></li>
+                </ul>
             </div>
         </div>
+
+        <div class="copyright">
+            &copy; 2025 GG Syndicate. All rights reserved.
+        </div>
+    </div>
+</footer>

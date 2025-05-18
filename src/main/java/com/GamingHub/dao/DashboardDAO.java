@@ -82,20 +82,4 @@ public class DashboardDAO {
     }
 
 
-    public Map<String, Float> getCategoryAveragePrices() throws SQLException {
-        String sql = """
-            SELECT c.category_name, AVG(p.price) AS avg_price
-            FROM product p
-            JOIN category c ON p.category_id = c.category_id
-            GROUP BY c.category_name
-        """;
-        Map<String, Float> data = new LinkedHashMap<>();
-        try (PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                data.put(rs.getString("category_name"), rs.getFloat("avg_price"));
-            }
-        }
-        return data;
-    }
 }
