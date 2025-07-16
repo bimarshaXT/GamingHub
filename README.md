@@ -1,0 +1,1 @@
+GamingHub is a web-based eCommerce application for gaming accessories which supports user and admin roles, allowing users to browse and purchase products, while admins can manage inventory, perform CRUD operations on products, and handle order management.
